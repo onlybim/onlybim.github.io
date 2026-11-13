@@ -1,5 +1,17 @@
-<html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>OnlyBim en construction</title>
+<!DOCTYPE html>
+<html lang="fr-CA"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>OnlyBim | Aide Revit et BIM en vidéo, par Lily (Montréal)</title>
+<meta name="description" content="Une demande Revit ? Un problème BIM ? Décris-moi ton problème et je te réponds avec une vidéo claire. Tutoriels Revit gratuits par Lily, experte BIM à Montréal.">
+<link rel="canonical" href="https://onlybim.ca/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:site_name" content="OnlyBim">
+<meta property="og:url" content="https://onlybim.ca/">
+<meta property="og:title" content="OnlyBim | Aide Revit et BIM en vidéo">
+<meta property="og:description" content="Décris-moi ton problème Revit ou BIM, je te réponds avec une vidéo claire. Tutoriels Revit gratuits sur YouTube.">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"OnlyBim","url":"https://onlybim.ca/","description":"Aide Revit et BIM en vidéo : solutions, formation et stratégie de déploiement, par Lily, experte BIM à Montréal.","areaServed":"CA","knowsAbout":["Revit","BIM","Dynamo","Structure"],"sameAs":["https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw"]}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
@@ -334,7 +346,7 @@ var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
 var card=document.createElement('div');card.className='sphcard';card.setAttribute('role','dialog');card.setAttribute('aria-live','polite');
 card.innerHTML='<button class="x" type="button" aria-label="Fermer">&times;</button><h3></h3><p></p><a class="go" target="_blank" rel="noopener">Voir le tutoriel &rarr;</a>';
 /* liens directs vers une vidéo : VIDEO["Mot"]="https://www.youtube.com/watch?v=..." ; sans lien, le bouton ouvre une recherche du sujet dans la chaîne */
-var VIDEO={},CHAN='https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw';vid.appendChild(card);
+var VIDEO={"Poteaux porteurs":"https://www.youtube.com/watch?v=kagK-v3rUSY","Semelle en gradin":"https://www.youtube.com/watch?v=bjsTUxyU4Dk","Fichier central":"https://www.youtube.com/watch?v=8cqrxOBGRlA","Famille paramétrique":"https://www.youtube.com/watch?v=WSURkrZhwvs","Élément de détail":"https://www.youtube.com/watch?v=DOTWjttnH90","Niveaux":"https://www.youtube.com/watch?v=C9DzMV1-_lA","Mur simple":"https://www.youtube.com/watch?v=I-A1JfL8iwQ","Murs structuraux":"https://www.youtube.com/watch?v=tlafMB0ZWRY","Maquette détachée":"https://www.youtube.com/watch?v=2vmBNYGAow8","Maquette existante":"https://www.youtube.com/watch?v=aAkswXhFFnQ","Ligne de justification":"https://www.youtube.com/watch?v=a8ypgDrK4vI","Formules":"https://www.youtube.com/watch?v=k4PaeYdWKkc","Revit 2026":"https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw"},CHAN='https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw';vid.appendChild(card);
 card.addEventListener('pointerdown',function(e){e.stopPropagation()});
 card.querySelector('.x').addEventListener('click',function(e){e.stopPropagation();closeT()});
 function openT(o){if(!o)return;cur0=o;opT=1;hv=null;waves=[];card.querySelector('h3').textContent=o.w;card.querySelector('p').textContent=TXT[o.w]||'';card.querySelector('.go').href=VIDEO[o.w]||(CHAN+'/search?query='+encodeURIComponent(o.w));card.style.setProperty('--cc','rgb('+COL[o.cat]+')');vid.classList.add('open')}
