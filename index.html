@@ -100,7 +100,7 @@ form.f{display:flex;flex-direction:column;gap:14px;background:#fff;border-radius
 form.f label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px}
 form.f input,form.f textarea,form.f select{font:400 16px var(--font);padding:12px 14px;border:1px solid #C9D3DA;border-radius:10px;background:#fff;color:var(--fg);width:100%}
 form.f textarea{min-height:110px;resize:vertical}
-form.f .ok{font-size:14px;color:#2F4452;background:#F3F6F8;border-radius:8px;padding:10px 12px}
+form.f .ok:empty{display:none}form.f .ok{font-size:14px;color:#2F4452;background:#F3F6F8;border-radius:8px;padding:10px 12px}
 footer{padding-block:22px;color:var(--muted);font-size:14px}
 
 @media (max-width:820px){
@@ -190,11 +190,12 @@ footer{padding-block:22px;color:var(--muted);font-size:14px}
     <p id="cp">Dis-moi ce que tu essaies de faire dans Revit. Je te réponds avec la suite.</p>
   </div>
   <form class="f" id="form" novalidate>
-    <label for="who">Je suis<select id="who"><option value="part">un particulier</option><option value="firme">une entreprise</option></select></label>
-    <label for="mail">Courriel<input id="mail" type="email" autocomplete="email" placeholder="nom@exemple.com"></label>
-    <label for="pb">Mon problème<textarea id="pb" placeholder="Ex. : je dois créer une famille de poteaux porteurs et je ne sais pas par où commencer."></textarea></label>
+    <label for="who">Je suis<select id="who" name="je_suis"><option value="part">un particulier</option><option value="firme">une entreprise</option></select></label>
+    <label for="mail">Courriel<input id="mail" name="email" type="email" required autocomplete="email" placeholder="nom@exemple.com"></label>
+    <label for="pb">Mon problème<textarea id="pb" name="message" required placeholder="Ex. : je dois créer une famille de poteaux porteurs et je ne sais pas par où commencer."></textarea></label>
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
     <button class="btn" type="submit">ENVOYER</button>
-    <div class="ok" id="ok">Exemple de formulaire : l'envoi (courriel et fichiers) sera branché plus tard.</div>
+    <div class="ok" id="ok" role="status" aria-live="polite"></div>
   </form>
 </div></section>
 </main>
@@ -254,7 +255,21 @@ function speak(i){
 function pick(k){stop();cur=k;render()}
 ['part','firme'].forEach(function(k){document.getElementById('b-'+k).addEventListener('click',function(){pick(k)})});
 document.getElementById('who').addEventListener('change',function(e){pick(e.target.value)});
-document.getElementById('form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('ok').textContent="Exemple seulement : rien n'a été envoyé."});
+document.getElementById('form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var f=e.target,ok=document.getElementById('ok'),btn=f.querySelector('button[type=submit]'),firme=(cur==='firme');
+  var mail=f.mail.value.trim(),pb=f.pb.value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)){ok.textContent=firme?'Veuillez entrer un courriel valide.':'Entre un courriel valide.';f.mail.focus();return}
+  if(!pb){ok.textContent=firme?'Veuillez décrire votre demande.':'Décris-moi ton problème.';f.pb.focus();return}
+  btn.disabled=true;ok.textContent=firme?'Envoi en cours…':'Envoi en cours…';
+  fetch('https://formspree.io/f/meagekva',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
+  .then(function(r){
+    if(r.ok){f.reset();ok.textContent=firme?'Merci, votre message est bien envoyé. Je vous réponds dès que possible.':'Merci, ton message est bien envoyé. Je te réponds dès que possible.'}
+    else throw new Error('x')
+  })
+  .catch(function(){ok.textContent=firme?"L'envoi a échoué. Veuillez réessayer ou écrire à onlybim.ca@gmail.com.":"L'envoi a échoué. Réessaie ou écris à onlybim.ca@gmail.com."})
+  .then(function(){btn.disabled=false});
+});
 render();
 if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
