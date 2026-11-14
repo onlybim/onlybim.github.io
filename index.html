@@ -443,6 +443,7 @@ OV=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],OF=[[0,2,4],[2,1,4],[1,3
 function cr(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
 function nz(v){var l=Math.hypot(v[0],v[1],v[2]);return [v[0]/l,v[1]/l,v[2]/l]}
 function uniqAx(L){var o=[];L.map(nz).forEach(function(p){if(!o.some(function(q){return Math.abs(Math.abs(q[0]*p[0]+q[1]*p[1]+q[2]*p[2])-1)<1e-6}))o.push(p)});return o}
+var LASTCI=[];
 function circles(fams,step,start,ext,great){var CI=[],dm=[];
  function circ(a,th){var ref=Math.abs(a[0])<.9?[1,0,0]:[0,1,0],t=nz(cr(a,ref)),u=cr(a,t),c0=Math.cos(th),s0=Math.sin(th),n=Math.max(24,Math.round(96*s0)),first=-1,prev=-1,i;
   for(i=0;i<n;i++){var w=2*PI*i/n,cw=Math.cos(w),sw=Math.sin(w),k=N.length;N.push([c0*a[0]+s0*(cw*t[0]+sw*u[0]),c0*a[1]+s0*(cw*t[1]+sw*u[1]),c0*a[2]+s0*(cw*t[2]+sw*u[2])]);DOT[k]=false;if(prev>=0)link(prev,k);else first=k;prev=k}
@@ -451,10 +452,32 @@ function circles(fams,step,start,ext,great){var CI=[],dm=[];
  great.forEach(function(ax){circ(ax,PI/2)});
  /* croisements de deux cercles : p.a = cos(t1), p.b = cos(t2), |p| = 1 */
  for(var i=0;i<CI.length;i++)for(var j=i+1;j<CI.length;j++){var A=CI[i][0],B=CI[j][0],d=A[0]*B[0]+A[1]*B[1]+A[2]*B[2];if(Math.abs(d)>.9999)continue;
-  var c1=CI[i][1],c2=CI[j][1],D=1-d*d,x=(c1-c2*d)/D,y=(c2-c1*d)/D,z2=(1-(x*x+y*y+2*x*y*d))/D;if(z2<0)continue;var C=cr(A,B);
-  [Math.sqrt(z2),-Math.sqrt(z2)].forEach(function(z){var pp,p=[x*A[0]+y*B[0]+z*C[0],x*A[1]+y*B[1]+z*C[1],x*A[2]+y*B[2]+z*C[2]],pp=nz(p);/* deux croisements trop proches (cercles presque tangents) = un seul point */if(dm.some(function(o){return Math.hypot(o[0]-pp[0],o[1]-pp[1],o[2]-pp[2])<.045}))return;dm.push(pp);var k=N.length;N.push(pp);DOT[k]=true})}}
+  var c1=CI[i][1],c2=CI[j][1],D=1-d*d,x=(c1-c2*d)/D,y=(c2-c1*d)/D,z2=(1-(x*x+y*y+2*x*y*d))/D;if(z2<-1e-6)continue;if(z2<0)z2=0;/* cercles tangents : traités pareil partout, malgré les arrondis */var C=cr(A,B);
+  [Math.sqrt(z2),-Math.sqrt(z2)].forEach(function(z){dm.push(nz([x*A[0]+y*B[0]+z*C[0],x*A[1]+y*B[1]+z*C[1],x*A[2]+y*B[2]+z*C[2]]))})}
+ /* croisements trop proches (cercles presque tangents) : regroupés, et on garde le centre du groupe (garde la symétrie) */
+ var par=dm.map(function(_,i){return i}),cell={},T=.045;
+ function fd(i){while(par[i]!==i){par[i]=par[par[i]];i=par[i]}return i}
+ function ck(p,dx,dy,dz){return (Math.floor(p[0]/T)+dx)+','+(Math.floor(p[1]/T)+dy)+','+(Math.floor(p[2]/T)+dz)}
+ dm.forEach(function(p,i){for(var dx=-1;dx<2;dx++)for(var dy=-1;dy<2;dy++)for(var dz=-1;dz<2;dz++)(cell[ck(p,dx,dy,dz)]||[]).forEach(function(j){var o=dm[j];if(Math.hypot(o[0]-p[0],o[1]-p[1],o[2]-p[2])<T){var a=fd(i),b=fd(j);if(a!==b)par[a]=b}});var k0=ck(p,0,0,0);(cell[k0]=cell[k0]||[]).push(i)});
+ var G={};dm.forEach(function(p,i){var r=fd(i),g=G[r]=G[r]||[0,0,0];g[0]+=p[0];g[1]+=p[1];g[2]+=p[2]});
+ for(var r in G){var k=N.length;N.push(nz(G[r]));DOT[k]=true}
+ LASTCI=CI}
+/* au-delà d'environ LIM points, on retire des groupes entiers de points symétriques (jamais un point seul) :
+   d'abord on garde les croisements où se rencontrent le plus de cercles, puis les groupes les plus éloignés des points déjà gardés */
+function thin(KA,LIM){var P=[],i;for(i=0;i<N.length;i++)if(DOT[i])P.push(i);if(P.length<=LIM)return;
+ var cls=[];
+ P.forEach(function(i){var p=N[i],v=KA.map(function(a){return Math.abs(a[0]*p[0]+a[1]*p[1]+a[2]*p[2])}).sort(function(x,y){return x-y}),m=0,k,j;
+  LASTCI.forEach(function(c){if(Math.abs(c[0][0]*p[0]+c[0][1]*p[1]+c[0][2]*p[2]-c[1])<2e-3)m++});
+  for(k=0;k<cls.length;k++){var C=cls[k],ok=true;for(j=0;j<v.length;j++)if(Math.abs(C.v[j]-v[j])>2e-3){ok=false;break}if(ok){C.pts.push(i);if(m>C.m)C.m=m;return}}
+  cls.push({v:v,pts:[i],m:m})});
+ cls.sort(function(a,b){return b.m-a.m||a.pts.length-b.pts.length});
+ var kept=[],tot=0,md=cls.map(function(){return 9});
+ function add(C){C.in=true;tot+=C.pts.length;C.pts.forEach(function(i){kept.push(i);var a=N[i];cls.forEach(function(D,k){if(D.in)return;var b=N[D.pts[0]],d=Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);if(d<md[k])md[k]=d})})}
+ add(cls[0]);
+ for(;;){var bi=-1,bs=-1;cls.forEach(function(C,k){if(C.in||tot+C.pts.length>LIM*1.06)return;var sc=md[k]+C.m*.05;if(sc>bs){bs=sc;bi=k}});if(bi<0)break;add(cls[bi])}
+ P.forEach(function(i){DOT[i]=false});kept.forEach(function(i){DOT[i]=true})}
 var CF=uniqAx([[1,0,0],[0,1,0],[0,0,1]]),CS=uniqAx([[1,1,1],[1,1,-1],[1,-1,1],[-1,1,1]]),CA=uniqAx([[1,1,0],[1,-1,0],[1,0,1],[1,0,-1],[0,1,1],[0,1,-1]]),
- I5=uniqAx(IV),I3=uniqAx((function(){var o=[],a,b,c;for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)for(c=-1;c<2;c+=2)o.push([a,b,c]);for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)o.push([0,a/f,b*f],[a/f,b*f,0],[b*f,0,a/f]);return o})()),
+ I5=uniqAx(IV),I3=uniqAx((function(){var o=[],a,b,c;for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)for(c=-1;c<2;c+=2)o.push([a,b,c]);for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)o.push([0,a*f,b/f],[a*f,b/f,0],[b/f,0,a*f]);return o})()),
  I2=uniqAx((function(){var o=[[1,0,0],[0,1,0],[0,0,1]],a,b,c;for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)for(c=-1;c<2;c+=2){var p=[a*f,b,c/f];o.push(p,[p[2],p[0],p[1]],[p[1],p[2],p[0]])}return o})());
 /* les maillages possibles : d'abord une des deux sphères (60 % maillée, 40 % cercles), puis une famille, puis une variante */
 var MAILLEE={
@@ -465,7 +488,7 @@ var MAILLEE={
  grille:{grille8:function(){rings(8,16,'grille')},grille10:function(){rings(10,20,'grille')}},
  cube:{cube5:function(){cube(5)},cube6:function(){cube(6)},cube7:function(){cube(7)}}},
 CERCLES={
- cercles:{cercles10:function(){circles([CF,CS],10,10,40,CA)},cercles15:function(){circles([CF,CS],15,15,45,CA)},cerclesico:function(){circles([I5,I3],12,12,24,I2)}}};
+ cercles:{cercles10:function(){circles([CF,CS],10,10,40,CA);thin(CF,500)},cercles15:function(){circles([CF,CS],15,15,45,CA);thin(CF,500)},cerclesico:function(){circles([I5,I3],12,12,24,I2);thin(I5,500)}}};
 /* sphère de cercles aux réglages tirés au hasard (comme si on bougeait les curseurs) ; le même numéro redonne toujours la même sphère */
 function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
 function reset(){N.length=0;ED.length=0;DOT.length=0;E={};map={}}
@@ -482,12 +505,12 @@ function randomCircles(seed){var R=rng(seed),k;
   var per=0,th;for(th=start;th<=ext+1e-6;th+=step)per++;
   var nc=0;fams.forEach(function(a){nc+=a.length*2*per});if(gc)nc+=G[2].length;
   if(nc<22||nc>100)continue;
-  reset();circles(fams,step,start,ext,gc?G[2]:[]);
+  reset();circles(fams,step,start,ext,gc?G[2]:[]);thin(G[0],500);
   var nd=0;for(var i=0;i<DOT.length;i++)if(DOT[i])nd++;
   if(nd<120||nd>1100)continue;
   DETAIL=(ico?'icosaèdre':'cube')+' · '+fn.join(' + ')+' · '+step+'° · étendue '+ext+'°'+(off?' · décalage '+off:'')+(gc?' · grands cercles':'');
   return true}
- reset();circles([CF,CS],10,10,40,CA);DETAIL='cube · faces + sommets · 10° · étendue 40° · grands cercles';return false}
+ reset();circles([CF,CS],10,10,40,CA);thin(CF,500);DETAIL='cube · faces + sommets · 10° · étendue 40° · grands cercles';return false}
 var MAILLAGES={};[MAILLEE,CERCLES].forEach(function(S){for(var k in S)MAILLAGES[k]=S[k]});
 var all={},fam,key;for(fam in MAILLAGES)for(key in MAILLAGES[fam])all[key]=MAILLAGES[fam][key];
 var force=null;try{force=new URLSearchParams(location.search).get('maillage')}catch(_){}
@@ -497,7 +520,7 @@ else if(force&&all[force]){MAILLAGE=force;all[MAILLAGE]()}
 else if(Math.random()<.6){var fs=Object.keys(MAILLEE),fk=fs[Math.floor(Math.random()*fs.length)],ks=Object.keys(MAILLEE[fk]);MAILLAGE=ks[Math.floor(Math.random()*ks.length)];all[MAILLAGE]()}
 else{var sd=Math.floor(Math.random()*1e6);MAILLAGE='cercles-'+sd;randomCircles(sd)}
 for(var i=0;i<N.length;i++)if(DOT[i]===undefined)DOT[i]=true;
-/* filet de sécurité : assez de points pour les 14 sujets, et bien plus que 12 arêtes */
+/* filet de sécurité : assez de points pour les sujets, et bien plus que 12 arêtes ; au plus environ 500 points (voir thin) */
 var nd=DOT.filter(Boolean).length;
 if(nd<60||ED.length<120){N.length=0;ED.length=0;DOT.length=0;E={};map={};MAILLAGE='ico4';geo(IV,IF,4);for(i=0;i<N.length;i++)DOT[i]=true}
 vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-reglages',DETAIL);
@@ -505,18 +528,9 @@ vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-regl
 /* les sujets (WORDS), posés sur les nœuds les plus proches de points bien répartis */
 var used={},TOP=fib(WORDS.length).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i]||!DOT[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
 
-/* au plus 120 points visibles par sphère : les sujets + les points sans texte, choisis pour bien se répartir (le plus loin possible des déjà choisis).
-   Les lignes du maillage restent toutes dessinées. ISTOP[i] = ce point porte un texte. */
-var MAXPTS=120,ISTOP={};
+/* tous les points de la sphère sont affichés (garde la symétrie). ISTOP[i] = ce point porte un texte (dessiné un peu plus gros). */
+var ISTOP={};
 TOP.forEach(function(o){ISTOP[o.i]=1});
-(function(){var keep={},cand=[],md={},i;
- TOP.forEach(function(o){keep[o.i]=1});
- for(i=0;i<N.length;i++)if(DOT[i]&&!keep[i]){cand.push(i);md[i]=9}
- function upd(s){var a=N[s];cand.forEach(function(j){if(keep[j])return;var b=N[j],d=Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2);if(d<md[j])md[j]=d})}
- TOP.forEach(function(o){upd(o.i)});
- var n=TOP.length;
- while(n<MAXPTS){var bi=-1,bd=-1;cand.forEach(function(j){if(!keep[j]&&md[j]>bd){bd=md[j];bi=j}});if(bi<0)break;keep[bi]=1;n++;upd(bi)}
- for(i=0;i<N.length;i++)DOT[i]=!!keep[i]})();
 
 var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
 /* cellulaire (pas de survol) : quand un sujet arrive à l'avant de la boule, sa vague part toute seule.
