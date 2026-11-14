@@ -132,7 +132,9 @@ ol.steps .d{color:var(--muted);font-size:15px}
 .examples .wrap{padding-block:32px;display:flex;flex-direction:column;gap:14px}
 .examples h2{font-size:20px}
 .chips{display:flex;flex-wrap:wrap;gap:10px}
-.chips span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:500;font-size:15px}
+.chips a{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px 9px 12px;font-weight:500;font-size:15px;text-decoration:none;color:var(--fg);transition:border-color .2s,color .2s}
+.chips a svg{flex:none;width:18px;height:18px}
+.chips a:hover,.chips a:focus-visible{border-color:var(--accent);color:var(--accent)}
 
 /* ===== Contact ===== */
 .contact{background:var(--tint)}
@@ -197,11 +199,10 @@ footer a:hover{color:var(--accent)}
   ol.steps{gap:28px;margin-top:36px}
   .examples .wrap{padding-block:48px}
   .examples .chips{gap:8px}
-  .examples .chips span{padding:8px 13px;font-size:14px;white-space:nowrap}
+  .examples .chips a{padding:8px 13px 8px 10px;font-size:14px;white-space:nowrap}
   .contact .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);padding-block:32px}
 }
 @media (min-width:1200px){
-  .examples .chips{flex-wrap:nowrap}
   .contact .wrap{padding-block:56px}
 }
 </style>
@@ -249,10 +250,10 @@ footer a:hover{color:var(--accent)}
   </aside>
 </div>
 
-<section class="examples" aria-label="Exemples de demandes"><div class="wrap">
-  <h2 id="exh">Des demandes comme celles-ci</h2>
-  <div class="chips">
-    <span>Créer une famille de poteaux porteurs</span><span>Une semelle en gradin</span><span>Un fichier central</span><span>La ligne de justification des murs</span><span>Une famille paramétrique avec formules</span>
+<section class="examples" aria-label="Sujets déjà filmés"><div class="wrap">
+  <h2 id="exh">Déjà filmé sur ma chaîne</h2>
+  <div class="chips" id="chips">
+    <a href="https://www.youtube.com/watch?v=kagK-v3rUSY" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Poteaux porteurs</a><a href="https://www.youtube.com/watch?v=bjsTUxyU4Dk" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Semelle en gradin</a><a href="https://www.youtube.com/watch?v=60UFE4fg9H4" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Fichier central</a><a href="https://www.youtube.com/watch?v=a8ypgDrK4vI" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Ligne de justification</a><a href="https://www.youtube.com/watch?v=WSURkrZhwvs" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Familles paramétriques</a><a href="https://www.youtube.com/watch?v=tlafMB0ZWRY" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>Murs structuraux</a>
   </div>
 </div></section>
 
@@ -323,6 +324,16 @@ $('form').addEventListener('submit',function(e){
 render();
 </script>
 
+<script>
+/* Pastilles « Déjà filmé » : 6 sujets tirés au hasard à chaque chargement. Pour en ajouter : une ligne [id, libellé court]. */
+(function(){
+var S=[["kagK-v3rUSY","Poteaux porteurs"],["bjsTUxyU4Dk","Semelle en gradin"],["60UFE4fg9H4","Fichier central"],["a8ypgDrK4vI","Ligne de justification"],["WSURkrZhwvs","Famille pour débutants"],["WnkCH2lmFBY","Famille paramétrique (cercle)"],["DOTWjttnH90","Élément de détail paramétrique"],["k4PaeYdWKkc","Formules dans une famille"],["XXU5dvdoG9I","Visibilité et formule IF"],["DXsTtZ1gJ4Q","Ligne de titre trop longue"],["tlafMB0ZWRY","Murs structuraux"],["MW4TaaKUj9Y","Mur structural ou architectural"],["I-A1JfL8iwQ","Créer un mur"],["C9DzMV1-_lA","Niveaux"],["2vmBNYGAow8","Détacher un modèle"],["aAkswXhFFnQ","Ouvrir un modèle existant"]];
+var box=document.getElementById('chips');if(!box)return;
+var svg='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4" fill="#0B73B8"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg>';
+var a=S.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}
+box.innerHTML=a.slice(0,6).map(function(v){return '<a href="https://www.youtube.com/watch?v='+v[0]+'" target="_blank" rel="noopener">'+svg+v[1]+'</a>'}).join('');
+})();
+</script>
 <script>
 /* Miniatures : 4 tutoriels tirés au hasard à chaque chargement (au plus 1 de la série en 10 parties).
    Pour ajouter une vidéo : ajoute une ligne [id, titre, durée] au début de la liste. */
@@ -490,9 +501,9 @@ vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-regl
 /* les 14 sujets, posés sur les nœuds les plus proches de 14 points bien répartis */
 var used={},TOP=fib(14).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i]||!DOT[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
 
-/* au plus 60 points visibles par sphère : les 14 sujets + 46 points sans texte, choisis pour bien se répartir (le plus loin possible des déjà choisis).
+/* au plus 120 points visibles par sphère : les 14 sujets + 106 points sans texte, choisis pour bien se répartir (le plus loin possible des déjà choisis).
    Les lignes du maillage restent toutes dessinées. ISTOP[i] = ce point porte un texte. */
-var MAXPTS=60,ISTOP={};
+var MAXPTS=120,ISTOP={};
 TOP.forEach(function(o){ISTOP[o.i]=1});
 (function(){var keep={},cand=[],md={},i;
  TOP.forEach(function(o){keep[o.i]=1});
