@@ -491,6 +491,10 @@ vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-regl
 var used={},TOP=fib(14).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i]||!DOT[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
 
 var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
+/* cellulaire (pas de survol) : quand un sujet arrive à l'avant de la boule, sa vague part toute seule.
+   Au plus 2 vagues à la fois, au moins 1,5 s entre deux départs ; le sujet doit repasser derrière avant de relancer. */
+var AUTO=window.matchMedia('(hover: none)').matches,lastAuto=-9;
+TOP.forEach(function(o){o.arm=true});
 /* carte de texte qui apparaît au centre de la boule ouverte */
 var card=document.createElement('div');card.className='sphcard';card.setAttribute('role','dialog');card.setAttribute('aria-live','polite');
 card.innerHTML='<button class="x" type="button" aria-label="Fermer">&times;</button><h3></h3><p></p><a class="go" target="_blank" rel="noopener">Voir le tutoriel &rarr;</a>';
@@ -515,6 +519,10 @@ function frame(ms){
     var q=N.map(function(p,i){var r=P(p[0],p[1],p[2]);if(EX){var s=1+EX*KX[i]*1.5;r.x=cx+(r.x-cx)*s;r.y=cy+(r.y-cy)*s}return r});
     ED.forEach(function(e){var a=q[e[0]],b=q[e[1]],d=Math.pow(dep((a.z+b.z)/2),2.4);c.strokeStyle='rgba(255,255,255,'+((.02+.2*d)*FA).toFixed(3)+')';c.lineWidth=.7;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()});
     q.forEach(function(p,i){if(!DOT[i])return;var d=dep(p.z),e=Math.pow(d,2.4);c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,.85+1.4*d,0,7);c.fill()});
+    if(AUTO||W<460)TOP.forEach(function(o){var z=q[o.i].z;
+      if(z<.2)o.arm=true;
+      else if(o.arm&&z>.55&&o.pz!==undefined&&z<=o.pz&&!drag&&!opT&&t-lastAuto>1.5&&waves.length<2){trig(o);if(o.ct===t){lastAuto=t;o.arm=false}}
+      o.pz=z});
     TOP.forEach(function(o){o.q={x:q[o.i].x,y:q[o.i].y,z:q[o.i].z};o.b=Math.pow(.5+.5*Math.sin(t*6.283/o.per+o.ph),2.2);o.fr=clamp((o.q.z+.1)/.4,0,1)*TF;o.ck=o.ct===undefined?0:Math.max(0,1-(t-o.ct)/7);o.hv+=((hv===o?1:0)-o.hv)*.12;
       var l=Math.max(o.b,o.hv*.9,o.ck);
       c.globalCompositeOperation='lighter';dot(SPR[o.cat],o.q.x,o.q.y,13+12*l,(.24+.5*l)*(.3+.7*o.fr)*TF);if(l>.45)dot(WHITE,o.q.x,o.q.y,1.8+2.7*l,l*.8*o.fr);c.globalCompositeOperation='source-over';
