@@ -490,6 +490,19 @@ vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-regl
 /* les 14 sujets, posés sur les nœuds les plus proches de 14 points bien répartis */
 var used={},TOP=fib(14).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i]||!DOT[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
 
+/* au plus 60 points visibles par sphère : les 14 sujets + 46 points sans texte, choisis pour bien se répartir (le plus loin possible des déjà choisis).
+   Les lignes du maillage restent toutes dessinées. ISTOP[i] = ce point porte un texte. */
+var MAXPTS=60,ISTOP={};
+TOP.forEach(function(o){ISTOP[o.i]=1});
+(function(){var keep={},cand=[],md={},i;
+ TOP.forEach(function(o){keep[o.i]=1});
+ for(i=0;i<N.length;i++)if(DOT[i]&&!keep[i]){cand.push(i);md[i]=9}
+ function upd(s){var a=N[s];cand.forEach(function(j){if(keep[j])return;var b=N[j],d=Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2);if(d<md[j])md[j]=d})}
+ TOP.forEach(function(o){upd(o.i)});
+ var n=TOP.length;
+ while(n<MAXPTS){var bi=-1,bd=-1;cand.forEach(function(j){if(!keep[j]&&md[j]>bd){bd=md[j];bi=j}});if(bi<0)break;keep[bi]=1;n++;upd(bi)}
+ for(i=0;i<N.length;i++)DOT[i]=!!keep[i]})();
+
 var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
 /* cellulaire (pas de survol) : quand un sujet arrive à l'avant de la boule, sa vague part toute seule.
    Au plus 2 vagues à la fois, au moins 1,5 s entre deux départs ; le sujet doit repasser derrière avant de relancer. */
@@ -518,7 +531,7 @@ function frame(ms){
     c.globalAlpha=1;c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
     var q=N.map(function(p,i){var r=P(p[0],p[1],p[2]);if(EX){var s=1+EX*KX[i]*1.5;r.x=cx+(r.x-cx)*s;r.y=cy+(r.y-cy)*s}return r});
     ED.forEach(function(e){var a=q[e[0]],b=q[e[1]],d=Math.pow(dep((a.z+b.z)/2),2.4);c.strokeStyle='rgba(255,255,255,'+((.02+.2*d)*FA).toFixed(3)+')';c.lineWidth=.7;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()});
-    q.forEach(function(p,i){if(!DOT[i])return;var d=dep(p.z),e=Math.pow(d,2.4);c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,.85+1.4*d,0,7);c.fill()});
+    q.forEach(function(p,i){if(!DOT[i])return;var d=dep(p.z),e=Math.pow(d,2.4);var tx=ISTOP[i];c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*(tx?1:.6)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,tx?.85+1.4*d:.55+.9*d,0,7);c.fill()});
     if(AUTO||W<460)TOP.forEach(function(o){var z=q[o.i].z;
       if(z<.2)o.arm=true;
       else if(o.arm&&z>.55&&o.pz!==undefined&&z<=o.pz&&!drag&&!opT&&t-lastAuto>1.5&&waves.length<2){trig(o);if(o.ct===t){lastAuto=t;o.arm=false}}
