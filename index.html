@@ -75,10 +75,11 @@ header.top .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-betw
 .th{position:relative;aspect-ratio:16/9;border-radius:12px;background:#0F1A24;color:#fff;padding:10px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;text-decoration:none;
   background-image:linear-gradient(rgba(120,190,230,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(120,190,230,.12) 1px,transparent 1px);background-size:22px 22px}
 .th .tb{display:contents}
-.th small{position:absolute;top:8px;left:10px;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#7CC4EC}
-.th b{font-size:13px;line-height:1.05;font-weight:800;letter-spacing:-.02em}
-.th b em{font-style:normal;color:#2E9BDB}
-.th .dur,.th .ttl{display:none}
+/* vraie miniature YouTube, qui remplit la carte */
+.th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.th:hover img{transform:scale(1.04)}
+.th .dur{position:absolute;right:6px;bottom:6px;z-index:1;font:600 11px/1 var(--font);font-style:normal;color:#fff;background:rgba(0,0,0,.82);padding:3px 5px;border-radius:4px}
+.th .ttl{display:none}
 .sideproof .btn{float:right;min-height:36px;padding:0 18px;font-size:12px;margin-top:14px}
 
 /* « Je suis » et étapes */
@@ -157,8 +158,6 @@ footer a:hover{color:var(--accent)}
   .thumbs{display:flex;flex-direction:column;gap:16px}
   .th{flex-direction:row;align-items:flex-start;gap:12px;aspect-ratio:auto;background:none;padding:0;border-radius:0;overflow:visible;color:var(--fg)}
   .th .tb{display:flex;flex-direction:column;justify-content:flex-end;position:relative;flex:0 0 46%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;padding:9px;color:#fff;background-color:#0F1A24;background-image:linear-gradient(rgba(120,190,230,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(120,190,230,.12) 1px,transparent 1px);background-size:18px 18px}
-  .th .tb small{top:8px;left:9px}
-  .th .tb b{font-size:11px}
   .th .dur{display:block;position:absolute;right:5px;bottom:5px;font:600 11px/1 var(--font);font-style:normal;color:#fff;background:rgba(0,0,0,.82);padding:3px 5px;border-radius:4px}
   .th .ttl{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
   .th .ttl strong{font-size:15px;line-height:1.28;font-weight:600;letter-spacing:-.005em}
@@ -192,8 +191,6 @@ footer a:hover{color:var(--accent)}
   .sideproof h2{margin:0 0 16px}
   .thumbs{display:flex;flex-direction:column;gap:12px}
   .th{padding:12px}
-  .th small{top:9px;left:11px;font-size:9px}
-  .th b{font-size:17px}
   .sideproof .btn{float:none;display:flex;width:max-content;margin:18px 0 0 auto}
   .hero .seglabel{margin-bottom:16px}
   .seg{max-width:760px}
@@ -240,12 +237,12 @@ footer a:hover{color:var(--accent)}
   <aside class="side">
     <h1>Une demande Revit&nbsp;?<br>Un problème BIM&nbsp;?<br>Écris-moi, je m'en<br>occupe et je le filme</h1>
     <div class="sideproof">
-      <h2>Déjà <span id="nbvid">20</span> tutoriels gratuits sur YouTube</h2>
-      <div class="thumbs">
-        <a class="th" href="https://www.youtube.com/watch?v=WSURkrZhwvs" target="_blank" rel="noopener"><span class="tb"><small>Revit 2026</small><b>FAMILLE<br><em>PARAMÉTRIQUE</em></b><i class="dur">24:03</i></span><span class="ttl"><strong>Famille paramétrique dans Revit : élément de détail (cercle)</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=kagK-v3rUSY" target="_blank" rel="noopener"><span class="tb"><small>Revit 2026</small><b>POTEAUX<br><em>PORTEURS</em></b><i class="dur">11:06</i></span><span class="ttl"><strong>Poteaux porteurs dans Revit 2026</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=bjsTUxyU4Dk" target="_blank" rel="noopener"><span class="tb"><small>Revit 2024</small><b>SEMELLE<br><em>EN GRADIN</em></b><i class="dur">15:59</i></span><span class="ttl"><strong>Création d'une semelle en gradin, Revit 2024</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=8cqrxOBGRlA" target="_blank" rel="noopener"><span class="tb"><small>Revit 2024</small><b>FICHIER<br><em>CENTRAL</em></b><i class="dur">4:25</i></span><span class="ttl"><strong>Version courte, Création d'un fichier central</strong><span class="ch">OnlyBim</span></span></a>
+      <h2>Déjà <span id="nbvid">23</span> tutoriels gratuits sur YouTube</h2>
+      <div class="thumbs" id="thumbs">
+        <a class="th" href="https://www.youtube.com/watch?v=WnkCH2lmFBY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/WnkCH2lmFBY/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">24:03</i></span><span class="ttl"><strong>Créer une famille paramétrique dans Revit : élément de détail (cercle)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=kagK-v3rUSY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/kagK-v3rUSY/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">11:06</i></span><span class="ttl"><strong>Poteaux porteurs dans Revit 2026 : créer et placer (tutoriel)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=bjsTUxyU4Dk" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/bjsTUxyU4Dk/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">15:59</i></span><span class="ttl"><strong>Semelle en gradin dans Revit : modélisation pas à pas (2024)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=8cqrxOBGRlA" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/8cqrxOBGRlA/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">4:25</i></span><span class="ttl"><strong>Fichier central Revit en 4 minutes (version courte)</strong><span class="ch">OnlyBim</span></span></a>
       </div>
       <a class="btn line" href="https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw" target="_blank" rel="noopener">VOIR LA CHAÎNE</a>
     </div>
@@ -327,6 +324,28 @@ render();
 </script>
 
 <script>
+/* Miniatures : 4 tutoriels tirés au hasard à chaque chargement (au plus 1 de la série en 10 parties).
+   Pour ajouter une vidéo : ajoute une ligne [id, titre, durée] au début de la liste. */
+(function(){
+var V=[["DXsTtZ1gJ4Q", "Revit : Ligne de titre trop longue ? Voici comment l'arrêter automatiquement à la fin du texte", "24:55"], ["fEUH8FxU5MU", "Revit : créer un élément de détail paramétrique – 7/10 : formules complexes et positionnement", "25:43"], ["Oghh48705XI", "Revit : créer un élément de détail paramétrique – 6/10 : modifier la famille (IF, AND, NOT)", "24:34"], ["46eiBr5la9s", "Revit : créer un élément de détail paramétrique – 5/10 : formules conditionnelles (AND, NOT)", "15:54"], ["aYplEtiGFG8", "Revit : créer un élément de détail paramétrique – 4/10 : formules simples et calcul des dimensions", "19:49"], ["mm1MucUQOxM", "Revit : créer un élément de détail paramétrique – 3/10 : association des paramètres d'occurrence", "12:46"], ["AVKebrJw89U", "Revit : créer un élément de détail paramétrique – 2/10 : paramètres de visibilité et de dimensions", "11:11"], ["DOTWjttnH90", "Revit : créer un élément de détail paramétrique – 1/10 : créer la famille", "10:14"], ["XXU5dvdoG9I", "Paramètre de visibilité et formule IF dans Revit : famille", "21:04"], ["k4PaeYdWKkc", "Formules dans une famille Revit : paramètres et calculs", "18:17"], ["WnkCH2lmFBY", "Créer une famille paramétrique dans Revit : élément de détail (cercle)", "24:03"], ["kagK-v3rUSY", "Poteaux porteurs dans Revit 2026 : créer et placer (tutoriel)", "11:06"], ["bjsTUxyU4Dk", "Semelle en gradin dans Revit : modélisation pas à pas (2024)", "15:59"], ["8cqrxOBGRlA", "Fichier central Revit en 4 minutes (version courte)", "4:25"], ["WSURkrZhwvs", "Famille Revit paramétrique : élément de détail pour débutants (2024)", "35:49"], ["a8ypgDrK4vI", "Ligne de justification des murs dans Revit : comment ça marche ?", "14:21"], ["tlafMB0ZWRY", "Murs structuraux dans Revit : visibilité selon la discipline", "7:43"], ["MW4TaaKUj9Y", "Mur structural ou architectural dans Revit : quelle différence ?", "4:26"], ["I-A1JfL8iwQ", "Créer un mur dans Revit : tutoriel pour débutants (2024)", "14:15"], ["C9DzMV1-_lA", "Créer et copier des niveaux dans Revit : tutoriel (2024)", "7:56"], ["60UFE4fg9H4", "Créer un fichier central dans Revit : tutoriel complet (Revit 2024)", "13:20"], ["2vmBNYGAow8", "Détacher un modèle Revit (maquette détachée) : tutoriel 2024", "6:26"], ["aAkswXhFFnQ", "Ouvrir un modèle Revit existant : tutoriel 2024", "7:40"]];
+var box=document.getElementById('thumbs');if(!box)return;
+document.getElementById('nbvid').textContent=V.length;
+var a=V.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}
+var pick=[],serie=false;
+for(var k=0;k<a.length&&pick.length<4;k++){var s=/\/10 :/.test(a[k][1]);if(s&&serie)continue;if(s)serie=true;pick.push(a[k])}
+function esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+box.innerHTML=pick.map(function(v){
+  var lo='https://i.ytimg.com/vi/'+v[0]+'/mqdefault.jpg';
+  return '<a class="th" href="https://www.youtube.com/watch?v='+v[0]+'" target="_blank" rel="noopener"><span class="tb">'+
+    '<img src="https://i.ytimg.com/vi/'+v[0]+'/maxresdefault.jpg" alt="" width="1280" height="720" data-lo="'+lo+'">'+
+    '<i class="dur">'+v[2]+'</i></span><span class="ttl"><strong>'+esc(v[1])+'</strong><span class="ch">OnlyBim</span></span></a>'}).join('');
+/* si YouTube n'a pas la grande image, il renvoie une petite image grise : on prend alors la moyenne */
+[].forEach.call(box.querySelectorAll('img'),function(im){
+  function fix(){if(im.naturalWidth<200&&im.src!==im.dataset.lo)im.src=im.dataset.lo}
+  im.addEventListener('load',fix);im.addEventListener('error',function(){if(im.src!==im.dataset.lo)im.src=im.dataset.lo});if(im.complete)fix()});
+})();
+</script>
+<script>
 /* Sphère « Réseau » dans le rectangle : sujets BIM posés sur les nœuds, onde au survol, rotation très lente */
 (function(){
 var vid=document.getElementById('vid');if(!vid)return;
@@ -376,16 +395,100 @@ function size(){var r=vid.getBoundingClientRect();W=r.width;H=r.height;R=Math.mi
 new ResizeObserver(size).observe(vid);size();
 new IntersectionObserver(function(e){vis=e[0].isIntersecting},{threshold:0}).observe(vid);
 
-/* réseau : 220 nœuds reliés à leurs 4 plus proches voisins */
-var N=[],ED=[],E={};
-(function(){var f=(1+Math.sqrt(5))/2,n=4,V=[[-1,f,0],[1,f,0],[-1,-f,0],[1,-f,0],[0,-1,f],[0,1,f],[0,-1,-f],[0,1,-f],[f,0,-1],[f,0,1],[-f,0,-1],[-f,0,1]].map(function(v){var l=Math.hypot(v[0],v[1],v[2]);return [v[0]/l,v[1]/l,v[2]/l]}),
-F=[[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]],map={};
-function id(p){var l=Math.hypot(p[0],p[1],p[2]);p=[p[0]/l,p[1]/l,p[2]/l];var k=p.map(function(x){return x.toFixed(4)}).join(',');if(!(k in map)){map[k]=N.length;N.push(p)}return map[k]}
-F.forEach(function(fc){var A=V[fc[0]],B=V[fc[1]],C=V[fc[2]],g={},i,j;
+/* réseau : à chaque chargement, une des deux sphères est tirée au hasard (sphère maillée ou sphère de cercles), puis sa variante.
+   Le rendu, lui, ne change pas. DOT[i] dit si le point i est dessiné (et peut recevoir un sujet).
+   Pour forcer un maillage (tests) : onlybim.ca/?maillage=ico4 (voir la liste MAILLAGES ci-dessous)
+   ou une sphère de cercles précise : onlybim.ca/?maillage=cercles-123456 (le numéro s'affiche dans data-maillage) */
+var N=[],ED=[],E={},DOT=[],MAILLAGE='',DETAIL='';
+(function(){
+var f=(1+Math.sqrt(5))/2,map={};
+function id(p){var l=Math.hypot(p[0],p[1],p[2]);p=[p[0]/l,p[1]/l,p[2]/l];var k=p.map(function(x){return Math.round(x*1e4)||0}).join(',');if(!(k in map)){map[k]=N.length;N.push(p)}return map[k]}
+function link(a,b){if(a===b)return;var k=a<b?a+'_'+b:b+'_'+a;if(!E[k]){E[k]=1;ED.push([a,b])}}
+/* géodésique : chaque face triangulaire découpée en n x n */
+function geo(V,F,n){F.forEach(function(fc){var A=V[fc[0]],B=V[fc[1]],C=V[fc[2]],g={},i,j;
  for(i=0;i<=n;i++)for(j=0;j<=n-i;j++)g[i+','+j]=id([0,1,2].map(function(c){return (i*A[c]+j*B[c]+(n-i-j)*C[c])/n}));
- for(i=0;i<=n;i++)for(j=0;j<=n-i;j++)[[1,0],[0,1],[-1,1]].forEach(function(d){var q=(i+d[0])+','+(j+d[1]);if(q in g){var a=g[i+','+j],b=g[q],k=a<b?a+'_'+b:b+'_'+a;if(!E[k]){E[k]=1;ED.push([a,b])}}})})})();
+ for(i=0;i<n;i++)for(j=0;j<n-i;j++){link(g[i+','+j],g[(i+1)+','+j]);link(g[i+','+j],g[i+','+(j+1)]);link(g[(i+1)+','+j],g[i+','+(j+1)])}})}
+/* parallèles et méridiens : 'off' = anneaux décalés (triangles), 'diag' = diagonales alternées, 'grille' = quadrillage */
+function rings(L,M,mode){var top=id([0,1,0]),bot=id([0,-1,0]),g={},k,m;
+ for(k=1;k<L;k++){var la=PI*k/L,o=(mode==='off'&&k%2===0)?.5:0;for(m=0;m<M;m++){var th=2*PI*(m+o)/M;g[k+'_'+m]=id([Math.cos(th)*Math.sin(la),Math.cos(la),Math.sin(th)*Math.sin(la)])}}
+ function q(k,m){return g[k+'_'+(((m%M)+M)%M)]}
+ for(m=0;m<M;m++){link(top,q(1,m));link(bot,q(L-1,m));
+  for(k=1;k<L;k++){link(q(k,m),q(k,m+1));
+   if(k<L-1){link(q(k,m),q(k+1,m));
+    if(mode==='off')link(q(k,m),k%2===1?q(k+1,m-1):q(k+1,m+1));
+    if(mode==='diag'){if((m+k)%2===0)link(q(k,m),q(k+1,m+1));else link(q(k,m+1),q(k+1,m))}}}}}
+/* cube gonflé en sphère : un quadrillage n x n sur chacune des 6 faces */
+function cube(n){for(var a=0;a<3;a++)[-1,1].forEach(function(s){var u=(a+1)%3,w=(a+2)%3,g={},i,j;
+ for(i=0;i<=n;i++)for(j=0;j<=n;j++){var p=[0,0,0];p[a]=s;p[u]=Math.tan(PI/4*(-1+2*i/n));p[w]=Math.tan(PI/4*(-1+2*j/n));g[i+','+j]=id(p)}
+ for(i=0;i<=n;i++)for(j=0;j<=n;j++){if(i<n)link(g[i+','+j],g[(i+1)+','+j]);if(j<n)link(g[i+','+j],g[i+','+(j+1)])}})}
+var IV=[[-1,f,0],[1,f,0],[-1,-f,0],[1,-f,0],[0,-1,f],[0,1,f],[0,-1,-f],[0,1,-f],[f,0,-1],[f,0,1],[-f,0,-1],[-f,0,1]],
+IF=[[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]],
+OV=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],OF=[[0,2,4],[2,1,4],[1,3,4],[3,0,4],[2,0,5],[1,2,5],[3,1,5],[0,3,5]];
+/* sphère de cercles : des cercles parallèles autour des axes de symétrie ; les points sont aux croisements */
+function cr(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+function nz(v){var l=Math.hypot(v[0],v[1],v[2]);return [v[0]/l,v[1]/l,v[2]/l]}
+function uniqAx(L){var o=[];L.map(nz).forEach(function(p){if(!o.some(function(q){return Math.abs(Math.abs(q[0]*p[0]+q[1]*p[1]+q[2]*p[2])-1)<1e-6}))o.push(p)});return o}
+function circles(fams,step,start,ext,great){var CI=[],dm=[];
+ function circ(a,th){var ref=Math.abs(a[0])<.9?[1,0,0]:[0,1,0],t=nz(cr(a,ref)),u=cr(a,t),c0=Math.cos(th),s0=Math.sin(th),n=Math.max(24,Math.round(96*s0)),first=-1,prev=-1,i;
+  for(i=0;i<n;i++){var w=2*PI*i/n,cw=Math.cos(w),sw=Math.sin(w),k=N.length;N.push([c0*a[0]+s0*(cw*t[0]+sw*u[0]),c0*a[1]+s0*(cw*t[1]+sw*u[1]),c0*a[2]+s0*(cw*t[2]+sw*u[2])]);DOT[k]=false;if(prev>=0)link(prev,k);else first=k;prev=k}
+  link(prev,first);CI.push([a,c0])}
+ fams.forEach(function(axes){axes.forEach(function(ax){[1,-1].forEach(function(sg){var a=[ax[0]*sg,ax[1]*sg,ax[2]*sg];for(var th=start;th<=ext+1e-6;th+=step){if(Math.abs(th-90)<1e-6&&sg<0)continue;circ(a,th*PI/180)}})})});
+ great.forEach(function(ax){circ(ax,PI/2)});
+ /* croisements de deux cercles : p.a = cos(t1), p.b = cos(t2), |p| = 1 */
+ for(var i=0;i<CI.length;i++)for(var j=i+1;j<CI.length;j++){var A=CI[i][0],B=CI[j][0],d=A[0]*B[0]+A[1]*B[1]+A[2]*B[2];if(Math.abs(d)>.9999)continue;
+  var c1=CI[i][1],c2=CI[j][1],D=1-d*d,x=(c1-c2*d)/D,y=(c2-c1*d)/D,z2=(1-(x*x+y*y+2*x*y*d))/D;if(z2<0)continue;var C=cr(A,B);
+  [Math.sqrt(z2),-Math.sqrt(z2)].forEach(function(z){var pp,p=[x*A[0]+y*B[0]+z*C[0],x*A[1]+y*B[1]+z*C[1],x*A[2]+y*B[2]+z*C[2]],pp=nz(p);/* deux croisements trop proches (cercles presque tangents) = un seul point */if(dm.some(function(o){return Math.hypot(o[0]-pp[0],o[1]-pp[1],o[2]-pp[2])<.045}))return;dm.push(pp);var k=N.length;N.push(pp);DOT[k]=true})}}
+var CF=uniqAx([[1,0,0],[0,1,0],[0,0,1]]),CS=uniqAx([[1,1,1],[1,1,-1],[1,-1,1],[-1,1,1]]),CA=uniqAx([[1,1,0],[1,-1,0],[1,0,1],[1,0,-1],[0,1,1],[0,1,-1]]),
+ I5=uniqAx(IV),I3=uniqAx((function(){var o=[],a,b,c;for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)for(c=-1;c<2;c+=2)o.push([a,b,c]);for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)o.push([0,a/f,b*f],[a/f,b*f,0],[b*f,0,a/f]);return o})()),
+ I2=uniqAx((function(){var o=[[1,0,0],[0,1,0],[0,0,1]],a,b,c;for(a=-1;a<2;a+=2)for(b=-1;b<2;b+=2)for(c=-1;c<2;c+=2){var p=[a*f,b,c/f];o.push(p,[p[2],p[0],p[1]],[p[1],p[2],p[0]])}return o})());
+/* les maillages possibles : d'abord une des deux sphères (60 % maillée, 40 % cercles), puis une famille, puis une variante */
+var MAILLEE={
+ ico:{ico3:function(){geo(IV,IF,3)},ico4:function(){geo(IV,IF,4)},ico5:function(){geo(IV,IF,5)}},
+ octa:{octa5:function(){geo(OV,OF,5)},octa6:function(){geo(OV,OF,6)},octa7:function(){geo(OV,OF,7)}},
+ anneaux:{anneaux8:function(){rings(8,14,'off')},anneaux10:function(){rings(10,18,'off')},anneaux12:function(){rings(12,22,'off')}},
+ diag:{diag8:function(){rings(8,12,'diag')},diag10:function(){rings(10,16,'diag')},diag12:function(){rings(12,20,'diag')}},
+ grille:{grille8:function(){rings(8,16,'grille')},grille10:function(){rings(10,20,'grille')}},
+ cube:{cube5:function(){cube(5)},cube6:function(){cube(6)},cube7:function(){cube(7)}}},
+CERCLES={
+ cercles:{cercles10:function(){circles([CF,CS],10,10,40,CA)},cercles15:function(){circles([CF,CS],15,15,45,CA)},cerclesico:function(){circles([I5,I3],12,12,24,I2)}}};
+/* sphère de cercles aux réglages tirés au hasard (comme si on bougeait les curseurs) ; le même numéro redonne toujours la même sphère */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
+function reset(){N.length=0;ED.length=0;DOT.length=0;E={};map={}}
+function randomCircles(seed){var R=rng(seed),k;
+ for(k=0;k<60;k++){
+  var ico=R()<.4,G=ico?[I5,I3,I2]:[CF,CS,CA],nm=ico?['5 branches','3 branches','2 branches']:['faces','sommets','arêtes'],fams=[],fn=[];
+  if(R()<.8){fams.push(G[0]);fn.push(nm[0])}
+  if(R()<.7){fams.push(G[1]);fn.push(nm[1])}
+  if(R()<(ico?.15:.3)){fams.push(G[2]);fn.push(nm[2])}
+  if(!fams.length){fams.push(G[0]);fn.push(nm[0])}
+  var step=Math.round((ico?10:8)+R()*(ico?10:12)),ext=Math.round(20+R()*40),off=R()<.5?0:Math.round(R()*9)/10,start=step*(1-off),gc=R()<(ico?.4:.6);
+  if(start<1)start=step;
+  /* nombre de cercles avant de construire : ni trop vide, ni trop chargé */
+  var per=0,th;for(th=start;th<=ext+1e-6;th+=step)per++;
+  var nc=0;fams.forEach(function(a){nc+=a.length*2*per});if(gc)nc+=G[2].length;
+  if(nc<22||nc>100)continue;
+  reset();circles(fams,step,start,ext,gc?G[2]:[]);
+  var nd=0;for(var i=0;i<DOT.length;i++)if(DOT[i])nd++;
+  if(nd<120||nd>1100)continue;
+  DETAIL=(ico?'icosaèdre':'cube')+' · '+fn.join(' + ')+' · '+step+'° · étendue '+ext+'°'+(off?' · décalage '+off:'')+(gc?' · grands cercles':'');
+  return true}
+ reset();circles([CF,CS],10,10,40,CA);DETAIL='cube · faces + sommets · 10° · étendue 40° · grands cercles';return false}
+var MAILLAGES={};[MAILLEE,CERCLES].forEach(function(S){for(var k in S)MAILLAGES[k]=S[k]});
+var all={},fam,key;for(fam in MAILLAGES)for(key in MAILLAGES[fam])all[key]=MAILLAGES[fam][key];
+var force=null;try{force=new URLSearchParams(location.search).get('maillage')}catch(_){}
+var fm=force&&/^cercles-(\d+)$/.exec(force);
+if(fm){MAILLAGE=force;randomCircles(+fm[1])}
+else if(force&&all[force]){MAILLAGE=force;all[MAILLAGE]()}
+else if(Math.random()<.6){var fs=Object.keys(MAILLEE),fk=fs[Math.floor(Math.random()*fs.length)],ks=Object.keys(MAILLEE[fk]);MAILLAGE=ks[Math.floor(Math.random()*ks.length)];all[MAILLAGE]()}
+else{var sd=Math.floor(Math.random()*1e6);MAILLAGE='cercles-'+sd;randomCircles(sd)}
+for(var i=0;i<N.length;i++)if(DOT[i]===undefined)DOT[i]=true;
+/* filet de sécurité : assez de points pour les 14 sujets, et bien plus que 12 arêtes */
+var nd=DOT.filter(Boolean).length;
+if(nd<60||ED.length<120){N.length=0;ED.length=0;DOT.length=0;E={};map={};MAILLAGE='ico4';geo(IV,IF,4);for(i=0;i<N.length;i++)DOT[i]=true}
+vid.setAttribute('data-maillage',MAILLAGE);if(DETAIL)vid.setAttribute('data-reglages',DETAIL);
+})();
 /* les 14 sujets, posés sur les nœuds les plus proches de 14 points bien répartis */
-var used={},TOP=fib(14).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
+var used={},TOP=fib(14).map(function(p,k){var bi=0,bd=9;N.forEach(function(n,i){if(used[i]||!DOT[i])return;var d=Math.pow(n[0]-p[0],2)+Math.pow(n[1]-p[1],2)+Math.pow(n[2]-p[2],2);if(d<bd){bd=d;bi=i}});used[bi]=1;return {i:bi,w:WORDS[k],cat:CAT[k],p:N[bi],ph:Math.random()*6.28,per:32+Math.random()*14,hv:0,ct:undefined}});
 
 var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
 /* carte de texte qui apparaît au centre de la boule ouverte */
@@ -411,7 +514,7 @@ function frame(ms){
     c.globalAlpha=1;c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
     var q=N.map(function(p,i){var r=P(p[0],p[1],p[2]);if(EX){var s=1+EX*KX[i]*1.5;r.x=cx+(r.x-cx)*s;r.y=cy+(r.y-cy)*s}return r});
     ED.forEach(function(e){var a=q[e[0]],b=q[e[1]],d=Math.pow(dep((a.z+b.z)/2),2.4);c.strokeStyle='rgba(255,255,255,'+((.02+.2*d)*FA).toFixed(3)+')';c.lineWidth=.7;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()});
-    q.forEach(function(p){var d=dep(p.z),e=Math.pow(d,2.4);c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,.85+1.4*d,0,7);c.fill()});
+    q.forEach(function(p,i){if(!DOT[i])return;var d=dep(p.z),e=Math.pow(d,2.4);c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,.85+1.4*d,0,7);c.fill()});
     TOP.forEach(function(o){o.q={x:q[o.i].x,y:q[o.i].y,z:q[o.i].z};o.b=Math.pow(.5+.5*Math.sin(t*6.283/o.per+o.ph),2.2);o.fr=clamp((o.q.z+.1)/.4,0,1)*TF;o.ck=o.ct===undefined?0:Math.max(0,1-(t-o.ct)/7);o.hv+=((hv===o?1:0)-o.hv)*.12;
       var l=Math.max(o.b,o.hv*.9,o.ck);
       c.globalCompositeOperation='lighter';dot(SPR[o.cat],o.q.x,o.q.y,13+12*l,(.24+.5*l)*(.3+.7*o.fr)*TF);if(l>.45)dot(WHITE,o.q.x,o.q.y,1.8+2.7*l,l*.8*o.fr);c.globalCompositeOperation='source-over';
@@ -427,7 +530,7 @@ function frame(ms){
         for(var k=0;k<S;k++){var u0=k/S,u1=(k+1)/S,um=(u0+u1)/2,g=gs(A[0]+(B[0]-A[0])*um,A[1]+(B[1]-A[1])*um,A[2]+(B[2]-A[2])*um);
           if(g<.02)continue;var z=a.z+(b.z-a.z)*um;if(z<-.05)continue;var zz=Math.pow(dep(z),1.6);
           c.strokeStyle='rgba('+COL[w.cat]+','+(Math.min(1,g)*.74*(.1+.9*zz)).toFixed(3)+')';c.lineWidth=.8+1.2*g;c.beginPath();c.moveTo(a.x+(b.x-a.x)*u0,a.y+(b.y-a.y)*u0);c.lineTo(a.x+(b.x-a.x)*u1,a.y+(b.y-a.y)*u1);c.stroke()}});
-      N.forEach(function(p,i){var g=gs(p[0],p[1],p[2]);if(g>.02&&q[i].z>-.05){var dd=.1+.9*Math.pow(dep(q[i].z),1.6);dot(SPR[w.cat],q[i].x,q[i].y,2.8+8*g,Math.min(1,g*.85)*dd);if(g>.4)dot(WHITE,q[i].x,q[i].y,1.4+2.4*g,(g-.4)*1.0*dd)}})});
+      N.forEach(function(p,i){if(!DOT[i])return;var g=gs(p[0],p[1],p[2]);if(g>.02&&q[i].z>-.05){var dd=.1+.9*Math.pow(dep(q[i].z),1.6);dot(SPR[w.cat],q[i].x,q[i].y,2.8+8*g,Math.min(1,g*.85)*dd);if(g>.4)dot(WHITE,q[i].x,q[i].y,1.4+2.4*g,(g-.4)*1.0*dd)}})});
     c.globalCompositeOperation='source-over'}
   }
   var sm=W<460;card.style.width=sm?(W-16)+'px':'';card.style.left=sm?W/2+'px':'';card.style.top=sm?H/2+'px':'';card.style.maxHeight=sm?(H-16)+'px':'';
@@ -444,7 +547,7 @@ vid.addEventListener('pointermove',function(e){var r=vid.getBoundingClientRect()
   lx=e.clientX;ly=e.clientY});
 vid.addEventListener('pointerup',function(e){if(drag&&mv>=6){var sw=Math.hypot(vx,vy),cap=3;if(sw>cap){vx*=cap/sw;vy*=cap/sw}if(performance.now()-lt>120){vx=vy=0}wx=vx;wy=vy}if(drag&&mv<6){var r=vid.getBoundingClientRect();openT(near(e.clientX-r.left,e.clientY-r.top))}drag=false;vid.classList.remove('drag')});
 vid.addEventListener('pointercancel',function(){drag=false;vid.classList.remove('drag')});
-window.onlybimSphere={open:function(k){openT(TOP[k])},close:closeT};
+window.onlybimSphere={open:function(k){openT(TOP[k])},close:closeT,maillage:MAILLAGE,reglages:DETAIL};
 vid.addEventListener('pointerleave',function(){if(!drag)hv=null});
 })();
 </script>
