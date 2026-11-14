@@ -532,7 +532,8 @@ var used={},TOP=fib(WORDS.length).map(function(p,k){var bi=0,bd=9;N.forEach(func
 var ISTOP={};
 TOP.forEach(function(o){ISTOP[o.i]=1});
 
-var KX=N.map(function(){return .55+Math.random()*1.1}),op=0,opT=0,cur0=null;
+/* ouverture au clic : la boule grossit sans se déformer (tous les points s'éloignent du centre de la même façon) */
+var KX=N.map(function(){return 1}),op=0,opT=0,cur0=null;
 /* cellulaire (pas de survol) : quand un sujet arrive à l'avant de la boule, sa vague part toute seule.
    Au plus 2 vagues à la fois, au moins 1,5 s entre deux départs ; le sujet doit repasser derrière avant de relancer. */
 var AUTO=window.matchMedia('(hover: none)').matches,lastAuto=-9;
@@ -558,7 +559,9 @@ function frame(ms){
     /* la boule continue de tourner lentement dans la direction où on l'a lancée (bas, gauche, diagonale…) ; après un lancer rapide, elle ralentit tout en douceur */
     if(!drag&&dt){var sp=reduce?0:(.07-.055*EX),kk=1-Math.exp(-1.1*dt);wx+=(dirY*sp-wx)*kk;wy+=(dirX*sp-wy)*kk;var w=Math.hypot(wx,wy);if(w>1e-6)M=ortho(mul(rA(wx/w,wy/w,w*dt),M))}
     c.globalAlpha=1;c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
-    var q=N.map(function(p,i){var r=P(p[0],p[1],p[2]);if(EX){var s=1+EX*KX[i]*1.5;r.x=cx+(r.x-cx)*s;r.y=cy+(r.y-cy)*s}return r});
+    /* ouverte, la boule glisse au centre du rectangle et grossit juste assez pour en couvrir les quatre coins */
+    var SF=1+EX*(Math.hypot(W/2,H/2)*1.12/R-1),ox=cx+(W/2-cx)*EX,oy=cy+(H/2-cy)*EX;
+    var q=N.map(function(p,i){var r=P(p[0],p[1],p[2]);if(EX){r.x=ox+(r.x-cx)*SF*KX[i];r.y=oy+(r.y-cy)*SF*KX[i]}return r});
     ED.forEach(function(e){var a=q[e[0]],b=q[e[1]],d=Math.pow(dep((a.z+b.z)/2),2.4);c.strokeStyle='rgba(255,255,255,'+((.02+.2*d)*FA).toFixed(3)+')';c.lineWidth=.7;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()});
     q.forEach(function(p,i){if(!DOT[i])return;var d=dep(p.z),e=Math.pow(d,2.4);var tx=ISTOP[i];c.fillStyle='rgba(255,255,255,'+((.06+.55*e)*(tx?1:.6)*FA).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,tx?.85+1.4*d:.55+.9*d,0,7);c.fill()});
     if(AUTO||W<460)TOP.forEach(function(o){var z=q[o.i].z;
