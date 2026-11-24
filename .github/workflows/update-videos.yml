@@ -13,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lire la chaîne YouTube et mettre à jour index.html
+      - name: Lire la chaîne YouTube et mettre à jour le site
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python3 scripts/update_videos.py
       - name: Enregistrer s'il y a du nouveau
         run: |
-          if [ -n "$(git status --porcelain index.html)" ]; then
+          if [ -n "$(git status --porcelain)" ]; then
             git config user.name "OnlyBim bot"
             git config user.email "actions@users.noreply.github.com"
-            git add index.html
+            git add index.html tutoriels.html sitemap.xml
             git commit -m "Mise à jour automatique des vidéos YouTube"
             git push
           else
