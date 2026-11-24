@@ -232,7 +232,7 @@ footer a:hover{color:var(--accent)}
 
   <div class="vidcol">
     <div class="vid" id="vid" role="img" aria-label="Sphère interactive des sujets BIM et Revit : passe la souris sur un point pour voir le sujet">
-      <img class="ph" alt="" src="photo-lily.webp" width="720" height="959">
+      <img class="ph" alt="Amélie, spécialiste BIM et consultante Revit à Montréal" src="photo-lily.webp" width="720" height="959">
     </div>
   </div>
 
@@ -253,10 +253,10 @@ footer a:hover{color:var(--accent)}
     <div class="sideproof">
       <h2>Déjà <span id="nbvid">27</span> tutoriels gratuits sur YouTube</h2>
       <div class="thumbs" id="thumbs">
-        <a class="th" href="https://www.youtube.com/watch?v=WnkCH2lmFBY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/WnkCH2lmFBY/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">24:03</i></span><span class="ttl"><strong>Créer une famille paramétrique dans Revit : élément de détail (cercle)</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=kagK-v3rUSY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/kagK-v3rUSY/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">11:06</i></span><span class="ttl"><strong>Poteaux porteurs dans Revit 2026 : créer et placer (tutoriel)</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=bjsTUxyU4Dk" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/bjsTUxyU4Dk/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">15:59</i></span><span class="ttl"><strong>Semelle en gradin dans Revit : modélisation pas à pas (2024)</strong><span class="ch">OnlyBim</span></span></a>
-        <a class="th" href="https://www.youtube.com/watch?v=8cqrxOBGRlA" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/8cqrxOBGRlA/mqdefault.jpg" alt="" loading="lazy" width="320" height="180"><i class="dur">4:25</i></span><span class="ttl"><strong>Fichier central Revit en 4 minutes (version courte)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=WnkCH2lmFBY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/WnkCH2lmFBY/mqdefault.jpg" alt="Créer une famille paramétrique dans Revit : élément de détail (cercle)" loading="lazy" width="320" height="180"><i class="dur">24:03</i></span><span class="ttl"><strong>Créer une famille paramétrique dans Revit : élément de détail (cercle)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=kagK-v3rUSY" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/kagK-v3rUSY/mqdefault.jpg" alt="Poteaux porteurs dans Revit 2026 : créer et placer (tutoriel)" loading="lazy" width="320" height="180"><i class="dur">11:06</i></span><span class="ttl"><strong>Poteaux porteurs dans Revit 2026 : créer et placer (tutoriel)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=bjsTUxyU4Dk" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/bjsTUxyU4Dk/mqdefault.jpg" alt="Semelle en gradin dans Revit : modélisation pas à pas (2024)" loading="lazy" width="320" height="180"><i class="dur">15:59</i></span><span class="ttl"><strong>Semelle en gradin dans Revit : modélisation pas à pas (2024)</strong><span class="ch">OnlyBim</span></span></a>
+        <a class="th" href="https://www.youtube.com/watch?v=8cqrxOBGRlA" target="_blank" rel="noopener"><span class="tb"><img src="https://i.ytimg.com/vi/8cqrxOBGRlA/mqdefault.jpg" alt="Fichier central Revit en 4 minutes (version courte)" loading="lazy" width="320" height="180"><i class="dur">4:25</i></span><span class="ttl"><strong>Fichier central Revit en 4 minutes (version courte)</strong><span class="ch">OnlyBim</span></span></a>
       </div>
       <a class="btn line" href="https://www.youtube.com/channel/UCTEBEqyBe2bzaXNAz3-7LKw" target="_blank" rel="noopener">VOIR LA CHAÎNE</a>
     </div>
@@ -370,11 +370,11 @@ document.getElementById('nbvid').textContent=V.length;
 var a=V.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}
 var pick=[],serie=false;
 for(var k=0;k<a.length&&pick.length<4;k++){var s=/\/10 :/.test(a[k][1]);if(s&&serie)continue;if(s)serie=true;pick.push(a[k])}
-function esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
 box.innerHTML=pick.map(function(v){
   var lo='https://i.ytimg.com/vi/'+v[0]+'/mqdefault.jpg';
   return '<a class="th" href="https://www.youtube.com/watch?v='+v[0]+'" target="_blank" rel="noopener"><span class="tb">'+
-    '<img src="https://i.ytimg.com/vi/'+v[0]+'/maxresdefault.jpg" alt="" width="1280" height="720" data-lo="'+lo+'">'+
+    '<img src="https://i.ytimg.com/vi/'+v[0]+'/maxresdefault.jpg" alt="'+esc(v[1])+'" width="1280" height="720" data-lo="'+lo+'">'+
     '<i class="dur">'+v[2]+'</i></span><span class="ttl"><strong>'+esc(v[1])+'</strong><span class="ch">OnlyBim</span></span></a>'}).join('');
 /* si YouTube n'a pas la grande image, il renvoie une petite image grise : on prend alors la moyenne */
 [].forEach.call(box.querySelectorAll('img'),function(im){
